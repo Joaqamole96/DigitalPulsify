@@ -27,18 +27,18 @@ A web application that converts strings into five different digital pulse codes 
 ## Encoding Types
 
 ### Non-Return to Zero (NRZ)
-- High level (+5V) represents '1'
-- Low level (-5V) represents '0'
+- High level (+5V) represents '0'
+- Low level (-5V) represents '1'
 - No return to zero between consecutive bits
 
 ### Return to Zero (RZ)
-- High pulse (+5V) in first half represents '1'
-- Low pulse (-5V) in first half represents '0'
+- High pulse (+5V) in first half represents '0'
+- Low pulse (-5V) in first half represents '1'
 - Always returns to zero in second half
 
 ### Manchester
-- Transition from high to low represents '1'
 - Transition from low to high represents '0'
+- Transition from high to low represents '1'
 - Each bit has a transition in the middle
 
 ### Binary AMI
@@ -46,8 +46,8 @@ A web application that converts strings into five different digital pulse codes 
 - '1' is represented by alternating positive (+5V) and negative (-5V) pulses
 
 ### Coded Mark Inversion (CMI)
-- '0' is represented by a high level in first half and low in second half
-- '1' alternates between all high and all low
+- '0' is represented by a neutral in first half and high in second half
+- '1' alternates between neutral and high
 
 ## Color Coding
 
