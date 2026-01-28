@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Pulse Code Converter</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-wave-square"></i> Digital Pulse Code Converter</h1>
+            <p class="subtitle">Convert strings to digital pulse codes (NRZ, RZ, Manchester, Binary AMI, CMI) and visualize them in a 2x2 box format for each bit.</p>
+        </header>
+        
+        <section class="input-section">
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="inputString"><i class="fas fa-font"></i> Enter Text to Encode</label>
+                    <input type="text" id="inputString" value="Hello" placeholder="Enter text to convert to pulse codes">
+                </div>
+                
+                <div class="input-group">
+                    <label for="pulseType"><i class="fas fa-code"></i> Select Pulse Code Type</label>
+                    <select id="pulseType">
+                        <option value="NRZ">Non-Return to Zero (NRZ)</option>
+                        <option value="RZ">Return to Zero (RZ)</option>
+                        <option value="Manchester">Manchester</option>
+                        <option value="AMI">Binary AMI</option>
+                        <option value="CMI">Coded Mark Inversion (CMI)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="convertBtn" class="convert-btn">
+                <i class="fas fa-bolt"></i> Convert to Digital Pulse Code
+            </button>
+        </section>
+        
+        <section class="output-section">
+            <div class="output-header">
+                <h2 class="section-title"><i class="fas fa-eye"></i> Digital Pulse Code Visualization</h2>
+            </div>
+            
+            <div class="code-selector" id="codeTabs">
+                <div class="code-tab active" data-code="NRZ">
+                    <i class="fas fa-minus"></i> Non-Return to Zero
+                </div>
+                <div class="code-tab" data-code="RZ">
+                    <i class="fas fa-undo"></i> Return to Zero
+                </div>
+                <div class="code-tab" data-code="Manchester">
+                    <i class="fas fa-exchange-alt"></i> Manchester
+                </div>
+                <div class="code-tab" data-code="AMI">
+                    <i class="fas fa-random"></i> Binary AMI
+                </div>
+                <div class="code-tab" data-code="CMI">
+                    <i class="fas fa-project-diagram"></i> CMI
+                </div>
+            </div>
+            
+            <div class="pulse-display">
+                <div class="pulse-title">
+                    <span id="currentCodeName">Non-Return to Zero (NRZ) Encoding</span>
+                    <span id="bitCount">5 characters × 8 bits = 40 bits</span>
+                </div>
+                
+                <div class="pulse-grid" id="pulseGrid">
+                    <!-- Pulse code visualization will be generated here -->
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color high"></div>
+                        <div class="legend-text">+5V (High)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color zero"></div>
+                        <div class="legend-text">0V (Zero)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color low"></div>
+                        <div class="legend-text">-5V (Low)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color timing"></div>
+                        <div class="legend-text">Timing (Vertical)</div>
+                    </div>
+                </div>
+                
+                <p class="pulse-description" id="pulseDescription">
+                    NRZ encoding: High level (+5V) represents '1', low level (-5V) represents '0'. No return to zero between consecutive bits.
+                </p>
+            </div>
+        </section>
+        
+        <section class="conversion-steps">
+            <h3 class="steps-title"><i class="fas fa-list-ol"></i> Conversion Process</h3>
+            
+            <div class="step">
+                <div class="step-title">Step 1: String → Character Array</div>
+                <div class="step-content" id="step1">"Hello" → ['H', 'e', 'l', 'l', 'o']</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-title">Step 2: Character Array → ASCII Array</div>
+                <div class="step-content" id="step2">'H' → 72, 'e' → 101, 'l' → 108, 'l' → 108, 'o' → 111</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-title">Step 3: ASCII Array → Binary Array</div>
+                <div class="step-content" id="step3">72 → 01001000, 101 → 01100101, 108 → 01101100, 108 → 01101100, 111 → 01101111</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-title">Step 4: Binary Array → Digital Pulse Code</div>
+                <div class="step-content" id="step4">Applying NRZ encoding to the binary sequence</div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>Digital Pulse Code Converter | Encoding Techniques Visualization</p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
