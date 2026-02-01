@@ -242,7 +242,7 @@ input:focus, select:focus {
 .pulse-grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: 0;
+  gap: var(--bit-gap, 0px);
   margin-top: 30px;
   padding: 15px;
   background-color: #0f172a;
@@ -257,19 +257,21 @@ input:focus, select:focus {
   display: flex;
   flex-direction: column;
   padding: 10px 0;
+  padding-top: 50px;
   border-radius: 0;
   position: relative;
   margin-right: 0;
   width: var(--bit-group-width, auto);
+  min-width: min-content;
 }
 
 /* Character label above the group */
 .char-label {
   position: absolute;
-  top: -25px;
+  top: -5px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #38bdf8;
   background-color: #1e293b;
@@ -277,6 +279,7 @@ input:focus, select:focus {
   border-radius: 6px;
   border: 1px solid #334155;
   white-space: nowrap;
+  z-index: 10;
 }
 
 /* Character group colors - subtle background only */
@@ -317,6 +320,8 @@ input:focus, select:focus {
   display: flex;
   gap: var(--bit-gap, 0px);
   margin-bottom: 8px;
+  flex-shrink: 0;
+  padding: 0 var(--bit-gap, 0px);
 }
 
 .toggle {
@@ -453,6 +458,13 @@ input:focus, select:focus {
   flex-shrink: 0;
 }
 
+.grid-size-select {
+  width: 60px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
 .export-actions {
   display: flex;
   gap: 8px;
@@ -478,6 +490,7 @@ input:focus, select:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .bit-label {
@@ -500,6 +513,8 @@ input:focus, select:focus {
 .bit-box {
   width: var(--bit-size, 45px);
   height: var(--bit-size, 45px);
+  min-width: var(--bit-size, 45px);
+  min-height: var(--bit-size, 45px);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -511,6 +526,7 @@ input:focus, select:focus {
   background-color: #0f172a;
   border-radius: 0;
   overflow: visible;
+  flex-shrink: 0;
 }
 
 .bit-box::before {

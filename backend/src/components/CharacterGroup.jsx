@@ -85,6 +85,7 @@ const CharacterGroup = memo(function CharacterGroup({
   connectorColor,
   showMidBitMarkers,
   activeBitIndex,
+  gridSize,
 }) {
   const bits = useMemo(
     () => processBits(binaryString, charIndex, encoding, amiStartPolarity, cmiStartState),
@@ -119,6 +120,7 @@ const CharacterGroup = memo(function CharacterGroup({
             connectorColor={connectorColor}
             showMidBitMarkers={showMidBitMarkers}
             isActive={activeBitIndex === globalIndex}
+            gridSize={gridSize}
           />
         ))}
       </div>

@@ -15,9 +15,9 @@ export const VOLTAGE_COLOR_MAP = {
 
 // Map voltage values to vertical positions (percentage)
 export const VOLTAGE_POSITIONS = {
-  1: '25%',   // +5V at top
+  1: '0%',    // +5V at top
   0: '50%',   // 0V at middle
-  '-1': '75%', // -5V at bottom
+  '-1': '100%', // -5V at bottom
 };
 
 // Bit box dimensions

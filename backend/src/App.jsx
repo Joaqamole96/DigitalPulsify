@@ -19,6 +19,7 @@ function App() {
   const [smoothConnectors, setSmoothConnectors] = useState(true);
   const [connectorColor, setConnectorColor] = useState('#38bdf8');
   const [showMidBitMarkers, setShowMidBitMarkers] = useState(false);
+  const [gridSize, setGridSize] = useState('2x2');
   const [showBinary, setShowBinary] = useState(true);
   const [showAscii, setShowAscii] = useState(true);
   const [animateBits, setAnimateBits] = useState(false);
@@ -91,6 +92,10 @@ function App() {
 
   const handleShowMidBitMarkersChange = useCallback((e) => {
     setShowMidBitMarkers(e.target.checked);
+  }, []);
+
+  const handleGridSizeChange = useCallback((e) => {
+    setGridSize(e.target.value);
   }, []);
 
   const handleShowBinaryChange = useCallback((e) => {
@@ -426,6 +431,20 @@ function App() {
 
               <div className="option-item">
                 <label className="option-title">
+                  <i className="fas fa-th"></i> Grid Size
+                </label>
+                <select
+                  className="grid-size-select"
+                  value={gridSize}
+                  onChange={handleGridSizeChange}
+                >
+                  <option value="2x2">2x2</option>
+                  <option value="4x4">4x4</option>
+                </select>
+              </div>
+
+              <div className="option-item">
+                <label className="option-title">
                   <i className="fas fa-tag"></i> Bit Labels
                 </label>
                 <label className="toggle">
@@ -662,6 +681,7 @@ function App() {
                     connectorColor={connectorColor}
                     showMidBitMarkers={showMidBitMarkers}
                     activeBitIndex={animateBits ? activeBitIndex : null}
+                    gridSize={gridSize}
                   />
                 ))}
               </div>
