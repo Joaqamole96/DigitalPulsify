@@ -56,6 +56,7 @@ h1 i {
   margin-bottom: 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   border: 1px solid #334155;
+  position: relative;
 }
 
 .input-row {
@@ -194,11 +195,11 @@ input:focus, select:focus {
   border-radius: 0;
   position: relative;
   margin-right: 0;
+  width: var(--bit-group-width, auto);
 }
 
 /* Character label above the group */
-.char-group::before {
-  content: attr(data-char);
+.char-label {
   position: absolute;
   top: -25px;
   left: 50%;
@@ -249,8 +250,163 @@ input:focus, select:focus {
 /* Bits row - no gaps for seamless transitions */
 .bits-row {
   display: flex;
-  gap: 0;
+  gap: var(--bit-gap, 0px);
   margin-bottom: 8px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #38bdf8;
+}
+
+.toggle-label {
+  display: none;
+}
+
+.options-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 64px;
+  border-radius: 0 8px 8px 0;
+  border: 1px solid #334155;
+  background-color: #0f172a;
+  color: #38bdf8;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2000;
+}
+
+.options-toggle.open {
+  left: 220px;
+}
+
+.options-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 12px;
+  box-sizing: border-box;
+  border-radius: 0 12px 12px 0;
+  background-color: #0f172a;
+  border-right: 1px solid #334155;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1500;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.options-panel.open {
+  transform: translateX(0);
+}
+
+.options-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #334155;
+}
+
+.options-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.option-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 0.8rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.option-title i {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.option-item input[type="range"] {
+  width: 70px;
+  height: 6px;
+  flex-shrink: 0;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.slider-row input[type="range"] {
+  width: 60px;
+}
+
+.range-value {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  min-width: 24px;
+}
+
+.color-input {
+  width: 32px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.export-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.export-actions button {
+  background-color: #334155;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.export-actions button:hover {
+  background-color: #475569;
 }
 
 .bit-container {
@@ -277,28 +433,31 @@ input:focus, select:focus {
 
 /* Bit box - seamless edges */
 .bit-box {
-  width: 45px;
-  height: 45px;
+  width: var(--bit-size, 45px);
+  height: var(--bit-size, 45px);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   border: none;
   border-top: 1px solid #475569;
   border-bottom: 1px solid #475569;
+  border-left: 1px solid rgba(139, 92, 246, 0.2);
   position: relative;
   background-color: #0f172a;
   border-radius: 0;
   overflow: visible;
 }
 
-/* First bit in a group gets left border */
-.bit-container:first-child .bit-box {
-  border-left: 1px solid #475569;
-}
-
-/* Last bit in a group gets right border */
-.bit-container:last-child .bit-box {
-  border-right: 1px solid #475569;
+.bit-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background-color: rgba(139, 92, 246, 0.2);
+  z-index: 4;
+  pointer-events: none;
 }
 
 .bit-cell {
@@ -369,11 +528,53 @@ input:focus, select:focus {
 .horizontal-pulse {
   height: 4px;
   margin-top: -2px;
+  border-radius: 0;
 }
 
 .vertical-pulse {
   width: 4px;
   margin-left: -2px;
+  border-radius: 0;
+}
+
+.smooth-connectors .horizontal-pulse,
+.smooth-connectors .vertical-pulse {
+  border-radius: 999px;
+}
+
+.midbit-marker {
+  left: 50%;
+  top: 12%;
+  bottom: 12%;
+  width: 2px;
+  margin-left: -1px;
+  background-color: rgba(56, 189, 248, 0.9);
+}
+
+.bit-box.active-bit {
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.8);
+}
+
+.pulse-grid.hide-grid-lines .voltage-line,
+.pulse-grid.hide-grid-lines .vertical-line,
+.pulse-grid.hide-grid-lines .bit-cell {
+  display: none;
+}
+
+.pulse-grid.hide-grid-lines .bit-box::before {
+  opacity: 0;
+}
+
+.pulse-grid.hide-bit-labels .bit-label {
+  display: none;
+}
+
+.pulse-grid.hide-char-boundaries .char-label {
+  display: none;
+}
+
+.pulse-grid.hide-char-boundaries .char-group {
+  background-color: transparent;
 }
 
 /* Empty state */
@@ -484,6 +685,12 @@ input:focus, select:focus {
   height: 20px;
 }
 
+.legend-color.connector {
+  background-color: #38bdf8;
+  width: 4px;
+  height: 20px;
+}
+
 .legend-text {
   font-size: 0.9rem;
   color: #94a3b8;
@@ -498,6 +705,39 @@ input:focus, select:focus {
   background-color: rgba(30, 41, 59, 0.7);
   border-radius: 6px;
   border-left: 4px solid #0ea5e9;
+}
+
+.encoding-aids {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: rgba(15, 23, 42, 0.8);
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+}
+
+.encoding-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.encoding-label {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.encoding-value {
+  font-family: 'Courier New', monospace;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 footer {
@@ -537,11 +777,6 @@ footer {
     gap: 10px;
   }
 
-  .bit-box {
-    width: 40px;
-    height: 40px;
-  }
-
   .legend {
     gap: 15px;
   }
@@ -558,10 +793,5 @@ footer {
 
   .code-tab {
     min-width: 100%;
-  }
-
-  .bit-box {
-    width: 35px;
-    height: 35px;
   }
 }

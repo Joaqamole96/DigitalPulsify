@@ -31,13 +31,14 @@ const createHorizontal = (left, right, voltage, key) => (
  * @param {string} position - 'center', 'left', or 'right'
  * @param {string} key - React key
  */
-const createVerticalTransition = (fromVoltage, toVoltage, position, key) => {
+const createVerticalTransition = (fromVoltage, toVoltage, position, key, colorOverride) => {
   const fromPercent = VOLTAGE_PERCENT[fromVoltage];
   const toPercent = VOLTAGE_PERCENT[toVoltage];
   const top = Math.min(fromPercent, toPercent);
   const bottom = Math.max(fromPercent, toPercent);
 
-  const leftPositions = { center: '50%', left: '25%', right: '75%' };
+  const leftPositions = { center: '50%', left: '25%', right: '75%', edge: '100%' };
+  const transitionColor = colorOverride || VOLTAGE_COLORS.TIMING;
   return (
     <div
       key={key}
@@ -46,10 +47,17 @@ const createVerticalTransition = (fromVoltage, toVoltage, position, key) => {
         top: `${top}%`,
         bottom: `${100 - bottom}%`,
         left: leftPositions[position],
-        backgroundColor: VOLTAGE_COLORS.TIMING,
+        backgroundColor: transitionColor,
       }}
     />
   );
+};
+
+const hasMidTransition = (encoding, bitValue) => {
+  if (encoding === ENCODING_TYPES.MANCHESTER) return true;
+  if (encoding === ENCODING_TYPES.RZ) return true;
+  if (encoding === ENCODING_TYPES.CMI && bitValue === '0') return true;
+  return false;
 };
 
 /**
@@ -118,17 +126,60 @@ const generatePulse = (encoding, bitValue, amiPolarity, cmiState) => {
 /**
  * BitBox - Renders a single bit with pulse visualization
  */
-const BitBox = memo(function BitBox({ bitIndex, bitValue, encoding, amiPolarity, cmiState }) {
+const BitBox = memo(function BitBox({
+  bitIndex,
+  bitValue,
+  encoding,
+  amiPolarity,
+  cmiState,
+  endVoltage,
+  nextStartVoltage,
+  connectBits,
+  connectorColor,
+  showMidBitMarkers,
+  isActive,
+}) {
   const pulseSegments = useMemo(
-    () => generatePulse(encoding, bitValue, amiPolarity, cmiState),
-    [encoding, bitValue, amiPolarity, cmiState]
+    () => {
+      const segments = generatePulse(encoding, bitValue, amiPolarity, cmiState);
+
+      if (
+        connectBits &&
+        nextStartVoltage !== null &&
+        nextStartVoltage !== undefined &&
+        endVoltage !== nextStartVoltage
+      ) {
+        segments.push(
+          createVerticalTransition(endVoltage, nextStartVoltage, 'edge', 'v-connect', connectorColor)
+        );
+      }
+
+      if (showMidBitMarkers && hasMidTransition(encoding, bitValue)) {
+        segments.push(
+          <div key="mid-marker" className="pulse-segment midbit-marker" />
+        );
+      }
+
+      return segments;
+    },
+    [
+      encoding,
+      bitValue,
+      amiPolarity,
+      cmiState,
+      endVoltage,
+      nextStartVoltage,
+      connectBits,
+      connectorColor,
+      showMidBitMarkers,
+    ]
   );
 
   const bitNumber = (bitIndex % 8) + 1;
 
   return (
     <div className="bit-container">
-      <div className="bit-box" id={`bit-${bitIndex}`}>
+      <div className={`bit-box ${isActive ? 'active-bit' : ''}`} id={`bit-${bitIndex}`}>
         {/* Reference grid lines */}
         <div className="voltage-line top-line" style={{ top: '25%' }} />
         <div className="voltage-line middle-line" style={{ top: '50%' }} />
