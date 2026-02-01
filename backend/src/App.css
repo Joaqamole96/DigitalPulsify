@@ -42,6 +42,71 @@ h1 i {
   font-size: 2.2rem;
 }
 
+.tutorial-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  margin-left: 8px;
+}
+
+.tutorial-btn:hover {
+  color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+/* Driver.js custom styling */
+.driver-popover {
+  background-color: #1e293b !important;
+  border: 1px solid #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.driver-popover-title {
+  color: #38bdf8 !important;
+  font-size: 1.1rem !important;
+}
+
+.driver-popover-description {
+  color: #cbd5e1 !important;
+}
+
+.driver-popover-progress-text {
+  color: #64748b !important;
+}
+
+.driver-popover-prev-btn,
+.driver-popover-next-btn {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+  border: 1px solid #475569 !important;
+  border-radius: 6px !important;
+}
+
+.driver-popover-prev-btn:hover,
+.driver-popover-next-btn:hover {
+  background-color: #475569 !important;
+}
+
+.driver-popover-close-btn {
+  color: #94a3b8 !important;
+}
+
+.driver-popover-close-btn:hover {
+  color: #f8fafc !important;
+}
+
+.driver-popover-arrow-side-left.driver-popover-arrow,
+.driver-popover-arrow-side-right.driver-popover-arrow,
+.driver-popover-arrow-side-top.driver-popover-arrow,
+.driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-color: #1e293b !important;
+}
+
 .subtitle {
   color: #94a3b8;
   font-size: 1.1rem;

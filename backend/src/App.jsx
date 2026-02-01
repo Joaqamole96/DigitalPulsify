@@ -1,4 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 import { CharacterGroup } from './components';
 import { ENCODING_INFO, DEFAULTS } from './constants';
 import { textToBinary, calculateEncodingStates } from './utils/encoding';
@@ -221,6 +223,114 @@ function App() {
 
   const currentEncodingInfo = ENCODING_INFO[encoding];
 
+  const startTutorial = useCallback((isAutoStart = false) => {
+    // Set sample text for demonstration
+    if (!inputText) {
+      setInputText('Hi');
+    }
+
+    const driverObj = driver({
+      showProgress: true,
+      animate: true,
+      smoothScroll: true,
+      allowClose: true,
+      overlayOpacity: 0.75,
+      popoverClass: 'tutorial-popover',
+      onDestroyStarted: () => {
+        localStorage.setItem('isTutorialFinishedDigitalPulsify', 'true');
+        driverObj.destroy();
+      },
+      steps: [
+        {
+          element: '#inputString',
+          popover: {
+            title: 'Text Input',
+            description: 'Enter any text here to convert it into digital pulse codes. Each character will be converted to its binary representation.',
+            side: 'bottom',
+            align: 'start'
+          }
+        },
+        {
+          element: '#pulseType',
+          popover: {
+            title: 'Encoding Type',
+            description: 'Select the pulse code encoding type: NRZ (Non-Return to Zero), RZ (Return to Zero), Manchester, Binary AMI, or CMI.',
+            side: 'bottom',
+            align: 'start'
+          }
+        },
+        {
+          element: '#options-toggle-btn',
+          popover: {
+            title: 'Options Panel',
+            description: 'Click here to open the options panel where you can customize the visualization, toggle features, and export your pulse grid.',
+            side: 'right',
+            align: 'start'
+          }
+        },
+        {
+          element: '#code-selector',
+          popover: {
+            title: 'Quick Encoding Tabs',
+            description: 'Quickly switch between different encoding types using these tabs. The active encoding is highlighted.',
+            side: 'bottom',
+            align: 'center'
+          }
+        },
+        {
+          element: '#pulse-grid-container',
+          popover: {
+            title: 'Pulse Grid Visualization',
+            description: 'This is the main visualization area. Each character is shown with its 8-bit binary representation as a pulse waveform based on the selected encoding.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: '#encoding-aids',
+          popover: {
+            title: 'Binary & ASCII Display',
+            description: 'View the binary stream and ASCII values of your input text. This helps understand how characters are converted to binary.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: '#conversion-steps',
+          popover: {
+            title: 'Conversion Process',
+            description: 'See the step-by-step conversion process: from your input string to character array, then to ASCII values, binary, and finally the pulse code.',
+            side: 'top',
+            align: 'center'
+          }
+        },
+        {
+          element: '#tutorial-btn',
+          popover: {
+            title: 'Tutorial Button',
+            description: 'Click this button anytime to replay this tutorial and learn how to use the Digital Pulse Code Converter.',
+            side: 'bottom',
+            align: 'center'
+          }
+        }
+      ]
+    });
+
+    driverObj.drive();
+  }, [inputText, setInputText]);
+
+  // Auto-start tutorial on first visit
+  useEffect(() => {
+    const isTutorialFinished = localStorage.getItem('isTutorialFinishedDigitalPulsify');
+    if (!isTutorialFinished || isTutorialFinished === 'false') {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        startTutorial(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   return (
     <div className="app">
       <div className="container">
@@ -228,6 +338,15 @@ function App() {
           <h1>
             <i className="fas fa-wave-square"></i>
             Digital Pulse Code Converter
+            <button
+              type="button"
+              id="tutorial-btn"
+              className="tutorial-btn"
+              onClick={() => startTutorial(false)}
+              title="Start Tutorial"
+            >
+              <i className="fas fa-question-circle"></i>
+            </button>
           </h1>
           <p className="subtitle">
             Convert strings to digital pulse codes (NRZ, RZ, Manchester, Binary AMI, CMI) and visualize them in a 2x2 box format for each bit.
@@ -268,6 +387,7 @@ function App() {
           </div>
           <button
             type="button"
+            id="options-toggle-btn"
             className={`options-toggle ${showOptions ? 'open' : ''}`}
             onClick={toggleOptions}
             aria-label="Toggle options panel"
@@ -489,7 +609,7 @@ function App() {
             </h2>
           </div>
 
-          <div className="code-selector">
+          <div id="code-selector" className="code-selector">
             {Object.entries(ENCODING_INFO).map(([code, info]) => (
               <div
                 key={code}
@@ -502,7 +622,7 @@ function App() {
             ))}
           </div>
 
-          <div className="pulse-display">
+          <div id="pulse-grid-container" className="pulse-display">
             <div className="pulse-title">
               <span>{currentEncodingInfo.name}</span>
               {binaryData.length > 0 && (
@@ -585,7 +705,7 @@ function App() {
             </p>
 
             {binaryData.length > 0 && (showBinary || showAscii) && (
-              <div className="encoding-aids">
+              <div id="encoding-aids" className="encoding-aids">
                 {showBinary && (
                   <div className="encoding-row">
                     <div className="encoding-label">Binary Stream</div>
@@ -608,7 +728,7 @@ function App() {
         </section>
 
         {binaryData.length > 0 && (
-          <section className="conversion-steps">
+          <section id="conversion-steps" className="conversion-steps">
             <h3 className="steps-title">
               <i className="fas fa-list-ol"></i> Conversion Process
             </h3>
