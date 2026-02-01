@@ -41,7 +41,7 @@ export const calculateEncodingStates = (binaryData, encoding) => {
           amiPolarity *= -1;
         }
         if (encoding === ENCODING_TYPES.CMI) {
-          cmiState = cmiState === 0 ? 1 : (cmiState === 1 ? -1 : 1);
+          cmiState = cmiState === 0 ? 1 : 0;
         }
       }
     });
@@ -68,7 +68,7 @@ export const getNextAmiPolarity = (currentPolarity, bit) => {
  */
 export const getNextCmiState = (currentState, bit) => {
   if (bit === '1') {
-    return currentState === 0 ? 1 : (currentState === 1 ? -1 : 1);
+    return currentState === 0 ? 1 : 0;
   }
   return currentState;
 };

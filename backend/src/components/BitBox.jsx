@@ -96,7 +96,7 @@ const generatePulse = (encoding, bitValue, amiPolarity, cmiState) => {
       break;
 
     case ENCODING_TYPES.CMI:
-      // 1 = full width at alternating state, 0 = transition from 0V to +5V
+      // 1 = full width at alternating 0V / +5V, 0 = 0V then +5V
       if (isOne) {
         pulses.push(createHorizontal(0, 100, cmiState, 'h1'));
       } else {

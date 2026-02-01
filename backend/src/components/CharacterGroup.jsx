@@ -19,7 +19,7 @@ const processBits = (binaryString, charIndex, encoding, amiStartPolarity, cmiSta
       amiPolarity *= -1;
     }
     if (encoding === ENCODING_TYPES.CMI && bit === '1') {
-      cmiState = cmiState === 0 ? 1 : (cmiState === 1 ? -1 : 1);
+      cmiState = cmiState === 0 ? 1 : 0;
     }
 
     return {

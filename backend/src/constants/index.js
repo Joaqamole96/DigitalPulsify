@@ -67,7 +67,7 @@ export const ENCODING_INFO = {
   },
   [ENCODING_TYPES.CMI]: {
     name: 'Coded Mark Inversion (CMI) Encoding',
-    description: "CMI encoding: '0' is represented by a high level in first half and low in second half. '1' alternates between all high and all low.",
+    description: "CMI encoding: '0' is 0V in the first half and +5V in the second half. '1' alternates between all 0V and all +5V, starting at 0V.",
     icon: 'project-diagram',
     label: 'CMI',
   },
