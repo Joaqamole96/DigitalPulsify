@@ -16,7 +16,7 @@ function App() {
   const [showLegend, setShowLegend] = useState(true);
   const [smoothConnectors, setSmoothConnectors] = useState(true);
   const [connectorColor, setConnectorColor] = useState('#38bdf8');
-  const [showMidBitMarkers, setShowMidBitMarkers] = useState(true);
+  const [showMidBitMarkers, setShowMidBitMarkers] = useState(false);
   const [showBinary, setShowBinary] = useState(true);
   const [showAscii, setShowAscii] = useState(true);
   const [animateBits, setAnimateBits] = useState(false);
