@@ -43,13 +43,13 @@ export const ENCODING_TYPES = {
 export const ENCODING_INFO = {
   [ENCODING_TYPES.NRZ]: {
     name: 'Non-Return to Zero (NRZ) Encoding',
-    description: "NRZ encoding: High level (+5V) represents '1', low level (-5V) represents '0'. No return to zero between consecutive bits.",
+    description: "NRZ encoding: '1' is represented by low voltage (-5V), and '0' is represented by high voltage (+5V). No return to zero between consecutive bits.",
     icon: 'minus',
     label: 'Non-Return to Zero',
   },
   [ENCODING_TYPES.RZ]: {
     name: 'Return to Zero (RZ) Encoding',
-    description: "RZ encoding: High pulse (+5V) in first half represents '1', low pulse (-5V) in first half represents '0'. Always returns to zero in second half.",
+    description: "RZ encoding: '1' is low voltage (-5V) in the first half, then returns to 0V. '0' is high voltage (+5V) in the first half, then returns to 0V.",
     icon: 'undo',
     label: 'Return to Zero',
   },
